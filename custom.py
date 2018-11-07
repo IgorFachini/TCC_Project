@@ -8,9 +8,11 @@ Detect from an image file
 """
 image_path = 'DSC01134resized.jpg'
 img = cv2.imread(image_path)
+h, w, n = img.shape
 
 dets = detector(img)
 for det in dets:
+    direction = (w / 2) - det.center().x
     p1 = (det.left(), det.top())
     p2 = (det.right(), det.bottom())
     color = (0, 0, 255) # Red
