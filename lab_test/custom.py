@@ -32,6 +32,7 @@ while True:
     # Stop the program if reached end of video
     if hasFrame:
         frame = imutils.resize(frame, width=600)
+        # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         dets = detector(frame)
         for det in dets:

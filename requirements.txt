@@ -1,0 +1,8 @@
+cv2
+dlib
+jsonpickle
+flask
+requests
+imutils
+json
+numpy

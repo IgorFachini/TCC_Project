@@ -57,7 +57,9 @@ def threaded(c):
             break
 
         frame = pickle.loads(data, fix_imports=True, encoding="bytes")
-        frame = cv2.imdecode(frame, cv2.IMREAD_COLOR)
+        frame = cv2.imdecode(frame, cv2.COLOR_BGR2GRAY)
+        # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
         # do some fancy processing here....
         h, w, n = frame.shape
         dets = detector(frame)
@@ -86,7 +88,7 @@ def threaded(c):
 
 
 def Main():
-    host = ""
+    host = "192.168.1.104"
 
     # reverse a port on your computer
     # in our case it is 12345 but it
