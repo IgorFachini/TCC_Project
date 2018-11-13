@@ -3,12 +3,12 @@ import dlib
 import cv2
 import imutils
 
-detector = dlib.simple_object_detector("data/models/cone_hog.svm")
+detector = dlib.simple_object_detector("data/models/detector.svm")
 
 """
 Detect from an image file
 """
-image_path = 'data/samples/img/1.jpg'
+image_path = 'data/samples/img/10.jpg'
 img = cv2.imread(image_path)
 h, w, n = img.shape
 
@@ -23,7 +23,7 @@ for det in dets:
     cv2.waitKey(0)
 
 
-video_path = 'data/samples/4_Trim.mp4'
+video_path = 'data/samples/20180616_144310_Trim.mp4'
 vc = cv2.VideoCapture(video_path)
 
 while True:
