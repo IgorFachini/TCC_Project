@@ -9,7 +9,7 @@ typeDetector = 'hog'
 # Imagem
 IMAGE_FILE = 'data/samples/img/5.jpg' 
 # Video
-VIDEO_FILE = 'data/samples/4_Trim.mp4'
+VIDEO_FILE = 'data/samples/5.mp4'
 # Arquivo cascade
 detector = ''
 # carregar o arquivo detector
@@ -22,7 +22,7 @@ ITEM = 'cone'
 color = (0, 0, 255)  # Red
 
 # Carregar leitor
-cam = cv2.VideoCapture(IMAGE_FILE)
+cam = cv2.VideoCapture(0)
 image = False
 
 while True:
@@ -46,8 +46,8 @@ while True:
                             cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 0, 255), 2)
         else:
             # procurar o objeto 
-            rectangles = detector.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5,
-            minSize=(55, 55))
+            rectangles = detector.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=10,
+            minSize=(70, 70))
 
             # circular cada objeto encontrado na imagem com retangulo
             for (i, (x, y, w, h)) in enumerate(rectangles):
