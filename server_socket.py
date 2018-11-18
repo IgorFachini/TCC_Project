@@ -1,20 +1,9 @@
-# import socket programming library
-import sys
-import cv2
-import dlib
-import pickle
-import socket
-import struct  # new
-
-# import thread module
+import sys, cv2, dlib, pickle, socket, struct , threading
 from _thread import *
-import threading
-
 print_lock = threading.Lock()
 
-
+# tratar a mensagem recebida
 def recv_size(the_socket):
-    # data length is packed into 4 bytes
     total_len = 0
     total_data = []
     size = 2 ** (struct.Struct('i').size * 8 - 1) - 1
@@ -37,85 +26,54 @@ def recv_size(the_socket):
         total_len = sum([len(i) for i in total_data])
     return b"".join(total_data)
 
-# thread fuction
-
-
+# thread
 def threaded(c):
     data = b""
     detector = dlib.simple_object_detector("data/models/cone_hog.svm")
-
     while True:
-
-        # data received from client
-        # data = c.recv(1024)
+        # dados recebidos do cliente
         data = recv_size(c)
         if not data:
-            print('Bye')
-
-            # lock released on exit
             print_lock.release()
             break
-
         frame = pickle.loads(data, fix_imports=True, encoding="bytes")
         frame = cv2.imdecode(frame, cv2.COLOR_BGR2GRAY)
-        # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-        # do some fancy processing here....
         h, w, n = frame.shape
         dets = detector(frame)
         direction = 0
         if dets:
-            direction = (w / 2) - dets[0].center().x
+            direction = dets[0].center().x - (w / 2) 
 
         for det in dets:
             p1 = (det.left(), det.top())
             p2 = (det.right(), det.bottom())
             color = (0, 0, 255)  # Red
             cv2.rectangle(frame, p1, p2, color)
-
         cv2.imshow('ImageWindow', frame)
         if cv2.waitKey(1) == 27:
             break
-
-        response = 'image received. size={}x{}, direction={}'.format(
-            frame.shape[1], frame.shape[0], direction)
-
-        # send back reversed string to client
+        response = 'direcao={}'.format(
+            direction)
+        # mandar a mensagem para o cliente
         c.send(response.encode())
-
-    # connection closed
+    # fechar conexao
     c.close()
 
+host = "127.0.0.1"
+port = 12345
 
-def Main():
-    host = "192.168.1.104"
-
-    # reverse a port on your computer
-    # in our case it is 12345 but it
-    # can be anything
-    port = 12345
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind((host, port))
-    print("socket binded to post", port)
-
-    # put the socket into listening mode
-    s.listen(5)
-    print("socket is listening")
-
-    # a forever loop until client wants to exit
-    while True:
-
-        # establish connection with client
-        c, addr = s.accept()
-
-        # lock acquired by client
-        print_lock.acquire()
-        print('Connected to :', addr[0], ':', addr[1])
-
-        # Start a new thread and return its identifier
-        start_new_thread(threaded, (c,))
-    s.close()
-
-
-if __name__ == '__main__':
-    Main()
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind((host, port))
+print("socket binded to post", port)
+# socket em espera
+s.listen(5)
+print("socket is listening")
+while True:
+    # estabilizar conexao
+    c, addr = s.accept()
+    print_lock.acquire()
+    print('Connected to :', addr[0], ':', addr[1])
+    # colocar conexao em uma thread
+    start_new_thread(threaded, (c,))
+s.close()
