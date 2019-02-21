@@ -1,8 +1,16 @@
-import sys, cv2, dlib, pickle, socket, struct , threading
+import sys
+import cv2
+import dlib
+import pickle
+import socket
+import struct
+import threading
 from _thread import *
 print_lock = threading.Lock()
 
 # tratar a mensagem recebida
+
+
 def recv_size(the_socket):
     total_len = 0
     total_data = []
@@ -27,6 +35,8 @@ def recv_size(the_socket):
     return b"".join(total_data)
 
 # thread
+
+
 def threaded(c):
     data = b""
     detector = dlib.simple_object_detector("data/models/cone_hog.svm")
@@ -43,7 +53,7 @@ def threaded(c):
         dets = detector(frame)
         direction = 0
         if dets:
-            direction = dets[0].center().x - (w / 2) 
+            direction = dets[0].center().x - (w / 2)
 
         for det in dets:
             p1 = (det.left(), det.top())
@@ -59,6 +69,20 @@ def threaded(c):
         c.send(response.encode())
     # fechar conexao
     c.close()
+
+
+def distance_to_camera(knownWidth, focalLength, perWidth):
+        # compute and return the distance from the maker to the camera
+    return (knownWidth * focalLength) / perWidth
+
+
+# initialize the known distance from the camera to the object, which
+# in this case is 24 inches
+KNOWN_DISTANCE = 24.0
+
+# initialize the known object width, which in this case, the piece of
+# paper is 12 inches wide
+KNOWN_WIDTH = 11.0
 
 host = "127.0.0.1"
 port = 12345

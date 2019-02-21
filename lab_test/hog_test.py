@@ -58,7 +58,7 @@ import imutils
 # Imagem
 IMAGE_FILE = 'data/samples/img/1.jpg' 
 # Video
-VIDEO_FILE = 'data/samples/4_Trim.mp4'
+VIDEO_FILE = 'data/samples/5.mp4'
 # Arquivo cascade
 DETECTOR_FILE = 'data/models/detector.svm'
 # carregar o arquivo cascade
