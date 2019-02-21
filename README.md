@@ -24,7 +24,7 @@ Download the folder named "data" and put it in this repository.
 
 -- **Not Important** -- 
 
-**lab_test.py** - Experimental codes for testing.<br>
+**lab_test** - Experimental codes for testing.<br>
 **client_http.py** - Experimental HTTP Client used to capture images.<br>
 **server_http.py** - Experimental HTTP Server with end-point used to compute received images.<br>
 
