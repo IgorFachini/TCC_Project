@@ -17,6 +17,7 @@ Download the folder named "data" and put it in this repository.
 
 -- **Important** --
 
+**data**             - (When Downloaded) Data folder contains, models, and images used in the code. <br>
 **client_socket.py** - Client used to capture images.<br>
 **server_socket.py** - Server used to compute received images from client.<br>
 **requirements.txt** - List of libraries to run this project.<br>
