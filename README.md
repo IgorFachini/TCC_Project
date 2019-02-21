@@ -3,7 +3,7 @@ image recognition for standalone robots.
 
 # Usage
 WITH PYTHON 3
-> python server_socket.py
+> python server_socket.py <br>
 > python client_socket.py
 
 
